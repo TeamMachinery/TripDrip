@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="220" height="220" viewBox="0 0 220 220">
+  <!-- Uzorak pozadine (koristi se kao maska; boja dolazi iz CSS-a) -->
+  <defs>
+    <g id="plane"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></g>
+    <g id="bag"><rect x="5" y="7" width="14" height="12.5" rx="2"/><path d="M9.5 7V4.5a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1V7M9 10.5v6M15 10.5v6M8 19.5v1.5M16 19.5v1.5"/></g>
+    <g id="pin"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></g>
+    <g id="sun"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M2.5 12h2M19.5 12h2M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></g>
+    <g id="camera"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></g>
+    <g id="globe"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.6 2.6 3.8 5.6 3.8 9s-1.2 6.4-3.8 9M12 3c-2.6 2.6-3.8 5.6-3.8 9s1.2 6.4 3.8 9"/></g>
+    <g id="palm"><path d="M12 21c0-5 .5-8 2-11M14 10c-1.5-3-4.5-4-7.5-3 2.5.2 4.5 1.3 5.5 3M14 10c.5-3 3-5 6-5-2 .8-3.6 2.4-4.4 4.4M14 10c2.5-.5 5 .5 6.5 2.5-2-.6-4-.6-6 .2M14 10c-2.6 0-5 1.4-6 3.6 1.8-1.2 3.6-1.6 5.6-1.4"/><path d="M8 21h9"/></g>
+  </defs>
+  <g fill="none" stroke="#000" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+    <use xlink:href="#plane" transform="translate(14 14) rotate(12 12 12) scale(1.15)"/>
+    <use xlink:href="#bag" transform="translate(118 10) rotate(-10 12 12) scale(1.1)"/>
+    <use xlink:href="#pin" transform="translate(178 62) rotate(8 12 12)"/>
+    <use xlink:href="#sun" transform="translate(64 70)"/>
+    <use xlink:href="#plane" transform="translate(126 104) rotate(-35 12 12)"/>
+    <use xlink:href="#camera" transform="translate(16 128) rotate(-12 12 12)"/>
+    <use xlink:href="#globe" transform="translate(84 160) scale(.95)"/>
+    <use xlink:href="#bag" transform="translate(176 168) rotate(14 12 12) scale(.95)"/>
+    <use xlink:href="#palm" transform="translate(190 120) rotate(-6 12 12) scale(.9)"/>
+    <path d="M44 56c14 10 30 12 46 4" stroke-dasharray="2 5"/>
+    <path d="M150 150c-12 10-26 14-40 10" stroke-dasharray="2 5"/>
+  </g>
+  <g fill="#000">
+    <circle cx="104" cy="44" r="1.6"/>
+    <circle cx="40" cy="200" r="1.6"/>
+    <circle cx="160" cy="210" r="1.6"/>
+    <circle cx="60" cy="112" r="1.2"/>
+    <circle cx="200" cy="30" r="1.2"/>
+  </g>
+</svg>
