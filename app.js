@@ -133,23 +133,76 @@ function defaultCategories() {
   return DEFAULT_CATEGORIES.map(([name, color]) => ({ id: uid(), name, color }));
 }
 
+/* Provjera podataka: sve što dolazi iz spremnika ili iz uvezene kopije
+   mora imati ispravan oblik, da se u aplikaciju ne može ubaciti kod. */
+const RE_ID = /^[\w-]{1,64}$/;
+const RE_HEX = /^#[0-9a-f]{6}$/i;
+const RE_ISO = /^\d{4}-\d{2}-\d{2}$/;
+const isId = (v) => typeof v === 'string' && RE_ID.test(v);
+const isIso = (v) => typeof v === 'string' && RE_ISO.test(v);
+const text = (v, max) => (typeof v === 'string' ? v.slice(0, max) : '');
+const isCents = (v) => Number.isInteger(v) && v >= 0 && v < 1e13;
+const num = (v) => (Number.isFinite(v) ? v : 0);
+const arr = (v) => (Array.isArray(v) ? v : []);
+const obj = (v) => v && typeof v === 'object' && !Array.isArray(v);
+
+function cleanCategory(c) {
+  if (!obj(c) || !isId(c.id)) return null;
+  return { id: c.id, name: text(c.name, 40) || 'Kategorija', color: RE_HEX.test(c.color) ? c.color : UNKNOWN_CAT.color, ...(c.archived ? { archived: true } : {}) };
+}
+
+function cleanTrip(t) {
+  if (!obj(t) || !isId(t.id) || !isIso(t.start)) return null;
+  const people = arr(t.people).filter((p) => obj(p) && isId(p.id)).map((p) => ({ id: p.id, name: text(p.name, 30) || '?' }));
+  const settlements = arr(t.settlements).filter((x) => obj(x) && isId(x.id)).map((x) => ({
+    id: x.id,
+    date: isIso(x.date) ? x.date : t.start,
+    at: num(x.at),
+    transfers: arr(x.transfers).filter((r) => obj(r) && isId(r.from) && isId(r.to) && isCents(r.amount))
+      .map((r) => ({ from: r.from, to: r.to, amount: r.amount })),
+    expenseIds: arr(x.expenseIds).filter(isId),
+  }));
+  return {
+    id: t.id, name: text(t.name, 60) || 'Putovanje', start: t.start,
+    end: isIso(t.end) && t.end >= t.start ? t.end : t.start,
+    people, settlements, createdAt: num(t.createdAt),
+  };
+}
+
+function cleanExpense(e) {
+  if (!obj(e) || !isId(e.id) || !isId(e.tripId) || !isIso(e.date) || !isCents(e.amount)) return null;
+  const out = {
+    id: e.id, tripId: e.tripId, date: e.date, amount: e.amount,
+    categoryId: isId(e.categoryId) ? e.categoryId : '', note: text(e.note, 300), createdAt: num(e.createdAt),
+  };
+  if (isId(e.paidBy)) out.paidBy = e.paidBy;
+  const split = arr(e.split).filter(isId);
+  if (split.length) out.split = split;
+  if (obj(e.shares)) {
+    const sh = Object.fromEntries(Object.entries(e.shares).filter(([k, v]) => RE_ID.test(k) && isCents(v) && v > 0));
+    if (Object.keys(sh).length) out.shares = sh;
+  }
+  if (isId(e.settledId)) out.settledId = e.settledId;
+  return out;
+}
+
 function normalize(d) {
+  const cats = arr(d?.categories).map(cleanCategory).filter(Boolean);
+  const set = obj(d?.settings) ? d.settings : {};
   const s = {
     v: DATA_VERSION,
-    trips: Array.isArray(d?.trips) ? d.trips : [],
-    expenses: Array.isArray(d?.expenses) ? d.expenses : [],
-    categories: Array.isArray(d?.categories) && d.categories.length ? d.categories : defaultCategories(),
-    settings: { bg: 'blue', pattern: true, ...(d?.settings || {}) },
+    trips: arr(d?.trips).map(cleanTrip).filter(Boolean),
+    expenses: arr(d?.expenses).map(cleanExpense).filter(Boolean),
+    categories: cats.length ? cats : defaultCategories(),
+    settings: {
+      bg: BACKGROUNDS.some(([id]) => id === set.bg) ? set.bg : 'blue',
+      pattern: typeof set.pattern === 'boolean' ? set.pattern : true,
+    },
   };
   // v1 → v2: zadana kategorija "Izleti" postala je "Aktivnosti"
   if (d && (d.v || 1) < 2) {
     const c = s.categories.find((x) => x.name === 'Izleti');
     if (c && !s.categories.some((x) => x.name === 'Aktivnosti')) c.name = 'Aktivnosti';
-  }
-  if (!BACKGROUNDS.some(([id]) => id === s.settings.bg)) s.settings.bg = 'blue';
-  for (const t of s.trips) {
-    if (!Array.isArray(t.people)) t.people = [];
-    if (!Array.isArray(t.settlements)) t.settlements = [];
   }
   return s;
 }
