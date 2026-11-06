@@ -1,6 +1,6 @@
 // Kad promijeniš bilo koju datoteku aplikacije, povećaj broj verzije
 // kako bi se nova verzija preuzela na mobitelu.
-const CACHE = 'tripdrip-v11';
+const CACHE = 'tripdrip-v13';
 const ASSETS = [
   './',
   './index.html',

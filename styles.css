@@ -314,6 +314,7 @@ svg { width: 22px; height: 22px; flex: none; }
 .switch:checked::after { transform: translateX(20px); }
 .hint { font-size: 13px; color: var(--muted); margin: 8px 4px 0; }
 .foot { text-align: center; color: var(--muted); font-size: 13px; margin-top: 32px; }
+.foot a { color: var(--accent); }
 
 /* ---------- Ploča za unos (odozgo, da je tipkovnica ne pokrije) ---------- */
 #sheet-root .backdrop {
@@ -394,6 +395,7 @@ svg { width: 22px; height: 22px; flex: none; }
 .welcome .big { font-size: 54px; }
 .welcome h2 { color: var(--text); margin: 8px 0 6px; font-size: 21px; }
 .welcome p { margin: 0; }
+.welcome p + p { margin-top: 10px; }
 .welcome .wide-btn { margin-top: 22px; }
 .empty { color: var(--muted); text-align: center; margin: 10px 0 20px; }
 

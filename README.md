@@ -10,7 +10,7 @@ Progresivna web aplikacija (PWA): nema servera ni prijave. Podaci ostaju **samo 
    Tvoji troškovi **nisu** u repozitoriju, u njemu je samo kod aplikacije.
 2. Uploadaj ove datoteke u repozitorij (*Add file → Upload files*):
    - `index.html`, `app.js`, `styles.css`, `sw.js`, `manifest.webmanifest`
-   - mapu `icons/` (sve četiri datoteke)
+   - mapu `icons/` (sve datoteke u njoj)
 
    Mapu `.claude/` ne treba uploadati, ona služi samo za lokalno testiranje.
 3. U repozitoriju: *Settings → Pages → Build and deployment → Source: Deploy from a branch*, branch `main`, mapa `/ (root)` → *Save*.

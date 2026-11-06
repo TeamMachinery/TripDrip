@@ -395,6 +395,7 @@ function splitView(trip) {
       <div class="big">👥</div>
       <h2>Podijeli troškove</h2>
       <p>Dodaj ljude s kojima putuješ (i sebe). Kod svakog troška zatim biraš tko je platio i za koga, a aplikacija izračuna tko kome koliko vraća.</p>
+      <p>Trošak koji netko plati dijeli se na jednake dijelove (defoltno) ili odaberi opciju <b>Točni iznosi</b> pa svakoj osobi upiši točan iznos koji ona duguje u tom trošku.</p>
       <button class="wide-btn primary" data-act="newPerson">${ICON.plus} Dodaj osobu</button>
     </div>`;
   }
@@ -619,8 +620,6 @@ function pieChart(rows, total) {
 /* ---------------- Postavke ---------------- */
 function renderSettings() {
   const cats = activeCats();
-  const counts = new Map();
-  for (const e of state.expenses) counts.set(e.categoryId, (counts.get(e.categoryId) || 0) + 1);
 
   $app.innerHTML = `
     <header class="topbar">
@@ -632,11 +631,10 @@ function renderSettings() {
     <div class="group-title">Kategorije</div>
     <div class="group">
       ${cats.map((c, i) => {
-        const n = counts.get(c.id) || 0;
         return `<div class="srow">
           <button class="srow-main" data-act="editCat" data-id="${c.id}">
             <span class="swatch" style="background:${c.color}"></span>
-            <span class="sname">${esc(c.name)}${n ? `<small>${n} ${plural(n, 'trošak', 'troška', 'troškova')}</small>` : ''}</span>
+            <span class="sname">${esc(c.name)}</span>
           </button>
           <button class="icon-btn" data-act="moveCat" data-id="${c.id}" data-dir="-1" aria-label="Pomakni gore" ${i === 0 ? 'disabled' : ''}>${ICON.up}</button>
           <button class="icon-btn" data-act="moveCat" data-id="${c.id}" data-dir="1" aria-label="Pomakni dolje" ${i === cats.length - 1 ? 'disabled' : ''}>${ICON.down}</button>
@@ -668,7 +666,7 @@ function renderSettings() {
       <button class="btn-row" data-act="importData">${ICON.upload} Uvezi iz kopije</button>
     </div>
     <p class="hint">Podaci se čuvaju samo na ovom uređaju. Povremeno izvezi kopiju (npr. u iCloud Drive) da ih ne izgubiš ako promijeniš mobitel.</p>
-    <p class="foot">Trip Drip ${APP_VERSION}</p>
+    <p class="foot">Trip Drip ${APP_VERSION}<br>Made by <a href="https://www.instagram.com/lora.outofoffice/" target="_blank" rel="noopener">Lora Pleško</a>, <a href="https://www.masinerija.com/" target="_blank" rel="noopener">Machinery Agency</a></p>
     <input type="file" id="import-file" accept="application/json,.json" hidden>`;
 
   document.getElementById('import-file').addEventListener('change', importFile);
